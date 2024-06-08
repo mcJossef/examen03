@@ -1,12 +1,18 @@
 package com.munoz.jossef.examen03
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.munoz.jossef.examen03.databinding.ItemTeacherBinding
 
-class TeacherAdapter(private val teachers: List<Teacher>) : RecyclerView.Adapter<TeacherAdapter.TeacherViewHolder>() {
+class TeacherAdapter(
+    private val context: Context,
+    private val teachers: List<Teacher>,
+    private val onItemClick: (Teacher) -> Unit,
+    private val onItemLongClick: (Teacher) -> Unit
+) : RecyclerView.Adapter<TeacherAdapter.TeacherViewHolder>() {
 
     inner class TeacherViewHolder(private val binding: ItemTeacherBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(teacher: Teacher) {
@@ -15,6 +21,15 @@ class TeacherAdapter(private val teachers: List<Teacher>) : RecyclerView.Adapter
             Glide.with(binding.foto.context)
                 .load(teacher.imageUrl)
                 .into(binding.foto)
+
+            binding.root.setOnClickListener {
+                onItemClick(teacher)
+            }
+
+            binding.root.setOnLongClickListener {
+                onItemLongClick(teacher)
+                true
+            }
         }
     }
 
